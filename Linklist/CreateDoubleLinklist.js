@@ -94,12 +94,66 @@ class DoubleLinklist {
     this.length--;
     return temp;
   }
+
+  get(index) {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index == 0) return this.head;
+    if (index == this.length - 1) return this.tail;
+    let temp = this.head;
+    for (let i = 0; i <= index; i++) {
+      temp = temp.next;
+    }
+    return temp;
+  }
+
+  set(index, value) {
+    let temp = this.get(index);
+
+    if (temp && value) {
+      temp.value = value;
+      return true;
+    }
+    return false;
+  }
+
+  insert(value, index) {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index == 0) return this.unshift(value);
+    if (index == this.length - 1) return this.push(value);
+    let temp = new CreateNewNode(value);
+    const before = this.get(index - 1);
+    const after = before.next;
+    before.next = temp;
+    temp.next = after;
+    temp.pre = before;
+    after.pre = temp;
+    this.length++;
+    return true;
+  }
+
+  delete(index) {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index === 0) return this.shift();
+    if (index === this.length - 1) return this.pop();
+
+    let temp = this.get(index);
+    temp.pre.next = temp.next;
+    temp.next.pre = temp.pre;
+    temp.pre = null;
+    temp.next = null;
+    this.length--;
+    return true;
+  }
 }
 
 const newDoubleLinklist = new DoubleLinklist(13);
+newDoubleLinklist.unshift(99);
 newDoubleLinklist.push(5);
 newDoubleLinklist.push(10);
-newDoubleLinklist.pop();
-newDoubleLinklist.unshift(99);
-newDoubleLinklist.shift();
-console.log(newDoubleLinklist);
+// newDoubleLinklist.pop();
+// newDoubleLinklist.shift();
+// console.log(newDoubleLinklist);
+// console.log(newDoubleLinklist.get(1));
+newDoubleLinklist.set(0, 10);
+newDoubleLinklist.delete(2);
+// console.log(newDoubleLinklist);
